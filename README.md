@@ -27,6 +27,9 @@
 [ ]Use diagrams, tables and technical language appropriatly
 [ ]Describe all design choices, diagrams and tables, explain their purpose, what they showcase and how they support the design
 
+https://visme.co/blog/visual-hierarchy/
+https://decode.agency/article/wireframe-annotations/
+
 Appendix 
  
 Appendix A – Business Context 
