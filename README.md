@@ -172,4 +172,13 @@ Problem Decomposition
 Key Performance Indicators 
 Empathy Mapping: What is an Empathy Map? - GeeksforGeeks
 Your All-in-One Learning Portal: GeeksforGeeks is a comprehensive educational platform that empowers learners across domains-spanning computer science and programming, school education, upskilling,...
+Tech stack
+Front end
+html5 usedfor structuring web page, ensures semantically organised content for accessibillity and search engine optimisation
+CSS used for tyling ensuring visually appealing ui with focus on responsive design to cater to different devices
+Database
+Mysql - relational database managaemnt system that stores essential data including user profiles, products and order history.
+
+
+
  
