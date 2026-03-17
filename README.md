@@ -180,5 +180,247 @@ Database
 Mysql - relational database managaemnt system that stores essential data including user profiles, products and order history.
 
 
+Primary green (buttons, highlights): #1B5E20
 
+Secondary green (accents): #2E7D32
+
+Background: #F9FBF7 (very light, almost white)
+
+Surface / cards: #FFFFFF
+
+Primary text: #1F2933 (dark grey, not pure black)
+
+Secondary text: #4B5563
+
+Border colour → #9CA3AF
+Border colour → #E5E7EB
+
+Homepage
+--------------------------------------------------
+LOGO        Home | Products | About | Account 🧑
+--------------------------------------------------
+
+[ HERO SECTION ]
+"fresh stuff from people around"
+[ Shop Now ] (green button)
+
+--------------------------------------------------
+
+[ FEATURED PRODUCTS ]
+[ ]   [ ]   [ ]
+[ Add to Cart ]  [ Add to Cart ] [ Add to Cart ]
+
+--------------------------------------------------
+
+[ HOW IT WORKS ]
+1. Browse   2. Order   3. Collect/Deliver
+
+--------------------------------------------------
+
+FOOTER (contact, links)
+
+------------------------------------------------
+#
+
+
+About page
+
+NAVBAR
+--------------------------------------------------
+
+[ TITLE ]
+"About Our thing"
+
+[ TEXT BLOCK ]
+- Mission
+- Supporting people
+- Sustainability
+
+--------------------------------------------------
+
+[ IMAGE / ILLUSTRATION ]
+
+--------------------------------------------------
+
+[ CTA ]
+"Start Shopping"
+[ Browse Products ] (green button)
+
+--------------------------------------------------
+FOOTER
+
+Dashboard
+
+--------------------------------------------------
+LOGO   Dashboard | Products | Orders | Logout
+--------------------------------------------------
+
+[ SIDEBAR ]
+- Overview
+- My Products
+- Orders
+- Sales
+
+--------------------------------------------------
+
+[ MAIN PANEL ]
+
+[ CARD ] Total Sales
+£1,240
+
+[ CARD ] Orders Today
+23
+
+[ CARD ] Top Product
+
+--------------------------------------------------
+
+[ SALES CHART ]
+(Bar/line chart)
+
+--------------------------------------------------
+
+[ RECENT ORDERS TABLE ]
+Order ID | Product | Quantity | Status
+--------------------------------------
+#001     | Apples  | 10       | Delivered
+
+Products page
+
+--------------------------------------------------
+NAVBAR
+--------------------------------------------------
+
+[ FILTER SIDEBAR ]
+- Category
+- Price
+- Availability
+
+--------------------------------------------------
+
+[ PRODUCT GRID ]
+
+[ product ]
+£2.00
+[ product ]
+
+[ product]
+£3.00
+[ Add to Cart ]
+
+[ product ]
+£1.50
+[ Add to Cart ]
+
+--------------------------------------------------
+
+Accounts page
+
+--------------------------------------------------
+NAVBAR
+--------------------------------------------------
+
+[ ACCOUNT DETAILS CARD ]
+Name: John Smith
+Email: john@email.com
+[ Edit Details ] (secondary button #E8F5E9, text #1B5E20)
+
+--------------------------------------------------
+
+[ ORDERS MANAGEMENT CARD ]
+[ Manage Orders ] (primary button #1B5E20, text #FFFFFF)
+[ Track Orders ]  (primary button #1B5E20, text #FFFFFF)
+
+--------------------------------------------------
+
+[ ORDER HISTORY CARD ]
+Order #001 - Delivered
+Order #002 - Pending
+Order #003 - Collected
+[ View More ] (secondary button #E8F5E9)
+
+--------------------------------------------------
+
+[ LOYALTY SCHEME CARD ]
+Earn points on every purchase and redeem rewards!
+[ Join / View Rewards ] (primary button #1B5E20, text #FFFFFF)
+
+
+CREATE DATA DICTIONARY
+List all attributes from your ERD
+
+For each, define data type, constraints, PK/FK
+
+Include notes about validation or default values
+
+DATA FLOW DIAGRAM
+Identify external entities
+
+Identify processes in the system
+
+Identify data stores
+
+Draw arrows showing data flow between entities, processes, and stores
+
+Start with level 0 (high-level), then expand to level 1 for details
+
+USE CASE
+Identify all actors
+
+List all functions the system provides
+
+Draw actors as stick figures, use cases as ovals
+
+Connect actors to the use cases they interact
+Use Cases
+
+Customer:
+
+Browse Products
+
+Add to Cart
+
+Place Order (Collection / Delivery)
+
+Track Order
+
+View Order History
+
+Manage Account
+
+Edit Details
+
+Delete Account
+
+Log Out
+
+Access Loyalty Scheme
+
+Farmer:
+
+Add New Product
+
+Delete Product
+
+Update Product Details
+
+Add Product Stock
+
+Delete Product Stock
+
+View Orders
+
+View Sales Details
+ERD
+Identify main nouns in the system → these are entities
+
+List their attributes
+
+Assign primary keys
+
+Define relationships and cardinality
+
+Resolve many-to-many with junction tables
+
+Draw diagram using boxes (entities), lines (relationships), PK/FK clearly labeled
  
