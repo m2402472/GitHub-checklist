@@ -423,4 +423,59 @@ Define relationships and cardinality
 Resolve many-to-many with junction tables
 
 Draw diagram using boxes (entities), lines (relationships), PK/FK clearly labeled
+
+Design reasons
+Users expect navigation at the top → faster access to pages (Homepage, Products, Account, Dashboard)
+
+Keeps consistent orientation across pages
+
+Supports ease of use for both customers and farmers
+
+
+Users expect to find contact info, links, and legal info at bottom
+
+Separates secondary information from primary content
+Top-Down Scanning: Place most important info/buttons near top
+
+Visual Hierarchy: Use size, colour, and spacing to indicate priority
+
+Consistency: Keep navigation and actions consistent across pages
+
+Accessibility: Ensure contrast, focus states, and readable layouts
+
+Task Flow: Group related actions and information logically
+
+
+Test ID	Page / Feature	Test Scenario / Action	Input / Data Type	Expected Result	Test Type	Pass / Fail	Notes / Comments
+T001	Customer / Add to Cart	Add 1 product to cart	Valid product ID / quantity = 1	Product added, cart count = 1	Valid Data		
+T002	Customer / Add to Cart	Add 0 quantity	Quantity = 0	Error message “Quantity must be at least 1”	Boundary / Invalid		
+T003	Customer / Add to Cart	Add maximum allowed quantity	Quantity = 1000	Product added successfully	Boundary / Extreme		
+T004	Customer / Place Order	Select collection, valid address and payment	Normal input	Order confirmation displayed, order saved	Valid Data		
+T005	Customer / Place Order	Select delivery, missing address	Address blank	Error message displayed “Address required”	Invalid Data		
+T006	Customer / Place Order	Use extremely long address (500 chars)	500 char string	Order either truncated or validation error	Extreme Data		
+T007	Customer / Manage Account	Edit name with valid input	Name = “John Smith”	Name updated successfully	Valid Data		
+T008	Customer / Manage Account	Edit name with empty input	Name = ""	Error message “Name cannot be empty”	Boundary / Invalid		
+T009	Customer / Manage Account	Edit email with invalid format	Email = “john[at]email”	Error message “Enter a valid email”	Invalid Data		
+T010	Customer / Manage Account	Delete account	Click delete	Account removed, redirect to homepage	Valid Data		
+T011	Customer / Loyalty Scheme	Redeem points	Points = 50	Points deducted, rewards updated	Valid Data		
+T012	Customer / Loyalty Scheme	Redeem more points than available	Points = 1000	Error message “Insufficient points”	Invalid / Boundary		
+T013	Farmer / Add Product	Add new product with valid data	Name, price, stock	Product added to dashboard	Valid Data		
+T014	Farmer / Add Product	Add product with negative price	Price = -5	Error message displayed	Invalid Data		
+T015	Farmer / Add Product	Add product with extremely long name	Name = 200 chars	Error or truncated input	Extreme Data		
+T016	Farmer / Update Stock	Increase stock within normal range	+50 units	Stock updated	Valid Data		
+T017	Farmer / Update Stock	Increase stock beyond max limit	+10000 units	Error message / validation	Extreme / Boundary		
+T018	Farmer / Delete Product	Delete existing product	Valid product ID	Product removed	Valid Data		
+T019	Farmer / View Orders	Orders list displays correctly	Normal data	Orders table shows all orders	Valid Data		
+T020	Farmer / View Sales Details	Check sales total	Multiple orders	Total matches sum of orders	Valid Data		
+T021	General / Login	Valid credentials	Email/password correct	Login successful	Valid Data		
+T022	General / Login	Invalid credentials	Wrong password / email	Error message “Invalid login”	Invalid Data		
+T023	General / Input Fields	Extremely long text input (500+ chars)	Any text field	Validation message or truncated input	Extreme Data		
+T024	General / Form Fields	Leave required field blank	Blank input	Error message displayed	Boundary / Invalid		
+T025	Products Page / Browse	Search for valid product	Name = “Carrots”	Product appears in results	Valid Data		
+T026	Products Page / Browse	Search for non-existent product	Name = “Dragonfruit”	Message “No products found”	Invalid Data		
+T027	Navigation / Links	Click all navbar links	N/A	Correct page loads	Valid Data		
+T028	Accessibility / Colours	Check contrast ratios	Buttons, text, background	Meets WCAG AA	Boundary / Valid		
+T029	Responsiveness	Resize screen to mobile / tablet	Various screen widths	Layout adjusts correctly	Extreme Data		
+T030	Order Tracking	Track order with valid ID	Valid order ID	Shows correct status	Valid Data		
+T031	Order Tracking	Track order with invalid ID	Non-existent ID	Error message “Order not found”	Invalid Data
  
