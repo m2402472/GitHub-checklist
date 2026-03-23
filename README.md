@@ -167,4 +167,40 @@ Problem Decomposition
 Key Performance Indicators 
 Empathy Mapping: What is an Empathy Map? - GeeksforGeeks
 Your All-in-One Learning Portal: GeeksforGeeks is a comprehensive educational platform that empowers learners across domains-spanning computer science and programming, school education, upskilling,...
+Thomas2008123
+RicardoRossi1
+advice1967
+victor1pro
+regorzo
 
+from flask import Flask render_template, request, redirect, url_for
+app = Flask(__name__)
+@app.route("/")
+def home():
+return redirect ("home.html")
+@app.route("/about")
+def about():
+return redirect ("about.html")
+@app.route("/contact")
+def contact():
+return render_ redirect ("contact.html")
+@app.route("/booking")
+def booking():
+return render_ redirect ("booking.html")
+@app.route("/partnership")
+def partnership():
+return redirect("partnership.html")
+
+
+if __name__ == "__main__":
+
+app.run(debug=True)
+
+
+STEP 2: CREATE YOUR PROJECT FOLDER
+FOLDER CALLED TEMPLATES MUST BE CALLED TEMPLATES CAUSE FLASK WILL ONLY OPEN THE FOLDER CALLED TEMPLATES CAUSE ITS PROGRAMMED TO DO THAT, AND THAT’S WHY WE HAVE ALL THE HTML AND STUFF IN THERE
+
+Functionallity
+asset log
+change log
+development log
