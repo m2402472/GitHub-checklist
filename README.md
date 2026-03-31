@@ -613,3 +613,197 @@ async function addProduct() {
 
 </body>
 </html>
+
+project/
+│
+├── app/
+│   ├── __init__.py
+│   ├── models.py
+│   ├── routes.py
+│
+├── instance/
+│   └── users.db
+│
+├── templates/
+│   └── index.html
+│
+├── static/
+│   ├── style.css
+│   └── script.js
+│
+├── run.py
+├── config.py
+└── requirements.txt
+
+	•	app/ → your backend logic
+	•	models.py → database tables
+	•	routes.py → login/signup API
+	•	templates/ → HTML
+	•	static/ → CSS + JS
+	•	instance/ → database file (auto-created)
+	•	run.py → starts your app
+	•
+ run.py
+  from app import create_app
+ 
+app = create_app()
+ 
+if __name__ == "__main__":
+    app.run(debug=True)
+
+config.py
+class Config:
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///users.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = 'secret-key'
+
+ app init.py
+
+ from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+from config import Config
+ 
+db = SQLAlchemy()
+ 
+def create_app():
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_object(Config)
+ 
+    CORS(app)
+    db.init_app(app)
+ 
+    from .routes import main
+    app.register_blueprint(main)
+ 
+    with app.app_context():
+        db.create_all()
+ 
+    return app
+
+   app models.py
+
+   from . import db
+ 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(200))
+
+ app routes
+ from flask import Blueprint, request, jsonify, render_template
+from werkzeug.security import generate_password_hash, check_password_hash
+from .models import User
+from . import db
+ 
+main = Blueprint('main', __name__)
+ 
+@main.route('/')
+def home():
+    return render_template('index.html')
+ 
+@main.route('/signup', methods=['POST'])
+def signup():
+    data = request.json
+ 
+    if User.query.filter_by(email=data['email']).first():
+        return jsonify({"message": "Email already exists"}), 400
+ 
+    hashed_password = generate_password_hash(data['password'])
+ 
+    user = User(
+        name=data['name'],
+        email=data['email'],
+        password=hashed_password
+    )
+ 
+    db.session.add(user)
+    db.session.commit()
+ 
+    return jsonify({"message": "User created successfully"}), 201
+ 
+ 
+@main.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    user = User.query.filter_by(email=data['email']).first()
+ 
+    if user and check_password_hash(user.password, data['password']):
+        return jsonify({"message": "Login successful"}), 200
+ 
+    return jsonify({"message": "Invalid email or password"}), 401
+
+ static/script js 
+
+ function signup() {
+    fetch("/signup", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            name: document.getElementById("signupName").value,
+            email: document.getElementById("signupEmail").value,
+            password: document.getElementById("signupPassword").value
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message));
+}
+ 
+function login() {
+    fetch("/login", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            email: document.getElementById("loginEmail").value,
+            password: document.getElementById("loginPassword").value
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message));
+}
+
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login & Sign Up</title>
+
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Login Form -->
+    <div id="loginForm">
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+        <div class="toggle" onclick="showSignUp()">
+            Don't have an account? Sign Up
+        </div>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div id="signupForm" class="hidden">
+        <h2>Sign Up</h2>
+        <input type="text" id="signupName" placeholder="Full Name" required>
+        <input type="email" id="signupEmail" placeholder="Email" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <button onclick="signup()">Sign Up</button>
+        <div class="toggle" onclick="showLogin()">
+            Already have an account? Login
+        </div>
+    </div>
+
+</div>
+
+<!-- Link JS -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
