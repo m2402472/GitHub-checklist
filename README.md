@@ -204,3 +204,412 @@ Functionallity
 asset log
 change log
 development log
+
+
+Core E-Commerce Features
+ Product listing page (name, price, image, description)
+ Add to cart functionality
+ Remove items from cart
+ Update item quantity in cart
+ Cart total calculation
+ Checkout simulation page
+
+🔍 Search & Filtering
+ Search bar (keyword-based)
+ Category filter (e.g. fruit, veg, dairy)
+ Price range filter
+ Product sorting (price low → high, etc.)
+ Dynamic filtering (updates without page reload)
+
+👤 User System
+ User registration form
+ Login system
+ Logout functionality
+ Role system (farmer vs customer)
+
+🧑‍🌾 Farmer Dashboard (CRUD Features)
+ Add new product
+ Edit existing product
+ Delete product
+ Upload product images
+ Set and update stock levels
+
+📦 Stock Management
+ Display stock availability
+ Show low stock warnings (e.g. “Only 3 left”)
+ Prevent purchase when out of stock
+
+⭐ Reviews & Ratings
+ Star rating system (1–5)
+ User review/comment submission
+ Display reviews on product page
+
+❤️ Extra User Features
+ Wishlist / favourites system
+ Save cart or wishlist (localStorage or database)
+ Order confirmation screen
+📍 Location & External Featur
+
+AtLEAST
+1. Shopping Cart (with localStorage)
+
+Why it’s good: Core e-commerce feature + shows real technical skill
+
+Include:
+
+ Add to cart button
+ Remove from cart
+ Quantity change
+ Total price calculation
+ Save cart using localStorage
+
+👉 This alone scores very well because it shows data persistence
+
+🔍 2. Search + Filter System
+
+Why it’s good: Looks advanced but is actually simple JavaScript
+
+Include:
+
+ Search bar (filters products as you type)
+ Category filter (buttons or dropdown)
+ Sort by price
+
+👉 Uses DOM manipulation, which examiners like
+
+🧑‍🌾 3. Farmer Product Manager (Simple Version)
+
+Why it’s good: Shows CRUD without needing a backend
+
+Keep it simple:
+
+ Add product (form)
+ Display product on page
+ Delete product
+
+👉 Store products in:
+
+localStorage OR
+a JavaScript array
+
+👉 This demonstrates Create + Delete, which is enough for marks
+
+⭐ 4. Reviews & Ratings (Basic)
+
+Why it’s good: Adds interactivity and realism
+
+Include:
+
+ Star rating (can be simple buttons)
+ Text review input
+ Display reviews under product
+
+👉 You can fake this with localStorage—no backend needed
+
+📦 5. Stock Indicator
+
+Why it’s good: Very easy but looks smart
+
+Include:
+
+ “In stock / Out of stock”
+ “Only X left” message
+ Disable button if stock = 0
+❤️ 6. Wishlist (Super Easy Win)
+
+Why it’s good: Minimal effort, extra marks
+
+Include:
+
+ “Add to wishlist” button
+ Save to localStorage
+ Show wishlist page
+🎨 7. Dark Mode Toggle
+
+Why it’s good: Tiny feature, big visual impact
+
+ Toggle button
+ Switch CSS theme using JavaScript
+✔️ 8. Form Validation
+
+Why it’s good: Examiners expect this
+
+Add validation to:
+
+ Sign-up / login form
+ Checkout form
+ Product upload form
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ Code
+
+ from flask import Flask, request, jsonify, render_template
+import sqlite3
+import os
+
+# Name of the SQLite database file
+DB_NAME = "products.db"
+
+# Connect to SQLite database (creates the file if it doesn't exist)
+conn = sqlite3.connect(DB_NAME, check_same_thread=False)  # Added check_same_thread=False to allow multithreading in Flask
+cursor = conn.cursor()
+
+# Initialize Flask application
+app = Flask(__name__)
+
+# --- Note: The following lines are incorrect for sqlite3 ---
+# You are mixing MySQL-style connection with SQLite. This will cause errors:
+# db = cursor(
+#     host="localhost",
+#     user="root",
+#     password="",
+#     database="farmers_market"
+# )
+# cursor = db.cursor(dictionary=True)
+# Instead, you already have `conn` and `cursor` for SQLite above.
+
+# Route to render the main dashboard page (HTML frontend)
+@app.route('/')
+def home():
+    return render_template('dashboard.html')
+
+# Route to get all products from the database, returns JSON list
+@app.route('/products')
+def products():
+    cursor.execute("SELECT * FROM products")
+    products = cursor.fetchall()  # fetchall returns list of tuples
+    # Convert fetched tuples to list of dicts for JSON response
+    keys = [description[0] for description in cursor.description]  # column names
+    products_list = [dict(zip(keys, row)) for row in products]
+    return jsonify(products_list)
+
+# Route to add a new product via POST request with JSON payload
+@app.route('/add', methods=['POST'])
+def add():
+    data = request.json
+    cursor.execute(
+        "INSERT INTO products (name, price, stock) VALUES (?, ?, ?)",
+        (data['name'], data['price'], data['stock'])
+    )
+    conn.commit()  # Commit changes to database
+    return "ok"
+
+# Route to delete a product by id (DELETE HTTP method)
+@app.route('/delete/<int:id>', methods=['DELETE'])
+def delete(id):
+    cursor.execute("DELETE FROM products WHERE id=?", (id,))
+    conn.commit()
+    return "ok"
+
+# Route to update the stock of a product by id (PUT HTTP method)
+@app.route('/update/<int:id>', methods=['PUT'])
+def update(id):
+    data = request.json
+    cursor.execute(
+        "UPDATE products SET stock=? WHERE id=?",
+        (data['stock'], id)
+    )
+    conn.commit()
+    return "ok"
+
+# Run Flask app in debug mode
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+
+ css
+
+ /* Set base font, background color, and spacing for the whole page */
+body {
+  font-family: Arial, sans-serif; /* Clean, readable font */
+  background: #f4f6f8;           /* Light grayish background */
+  margin: 0;                     /* Remove default margin */
+  padding: 20px;                 /* Add padding around content */
+}
+
+/* Style for main page title */
+h1 {
+  text-align: center;            /* Center the heading */
+  color: #2c3e50;                /* Dark blue-gray color */
+}
+
+/* Style for secondary headings */
+h2 {
+  color: #34495e;                /* Slightly lighter blue-gray */
+}
+
+/* Container to center content and limit maximum width */
+.container {
+  max-width: 900px;              /* Max width for readability */
+  margin: auto;                  /* Center horizontally */
+}
+
+/* Card style for sections (like forms and tables) */
+.card {
+  background: white;             /* White background for contrast */
+  padding: 20px;                 /* Inner spacing */
+  margin-bottom: 20px;           /* Space below each card */
+  border-radius: 10px;           /* Rounded corners */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+}
+
+/* Style inputs (text fields and number fields) */
+input {
+  padding: 10px;                 /* Comfortable padding inside input */
+  margin: 5px;                   /* Space between inputs */
+  border: 1px solid #ccc;        /* Light gray border */
+  border-radius: 5px;            /* Slightly rounded corners */
+}
+
+/* Base button style */
+button {
+  padding: 10px 15px;            /* Padding inside buttons */
+  border: none;                  /* Remove default border */
+  border-radius: 5px;            /* Rounded corners */
+  cursor: pointer;               /* Pointer cursor on hover */
+  color: white;                  /* Text color */
+}
+
+/* Specific button colors */
+.add-btn {
+  background: #27ae60;           /* Green for add (positive action) */
+}
+
+.delete-btn {
+  background: #e74c3c;           /* Red for delete (danger action) */
+}
+
+.update-btn {
+  background: #f39c12;           /* Orange for update (warning/action) */
+}
+
+/* Button hover effect for feedback */
+button:hover {
+  opacity: 0.9;                  /* Slightly transparent on hover */
+}
+
+/* Table styling */
+table {
+  width: 100%;                   /* Full width */
+  border-collapse: collapse;     /* Remove gaps between cells */
+  margin-top: 10px;              /* Space above table */
+}
+
+/* Table header styling */
+th {
+  background: #2c3e50;           /* Dark blue-gray background */
+  color: white;                  /* White text */
+  padding: 10px;                 /* Padding inside header cells */
+}
+
+/* Table data cells */
+td {
+  padding: 10px;                 /* Padding inside cells */
+  border-bottom: 1px solid #ddd; /* Light gray line below rows */
+}
+
+/* Table row hover effect for better UX */
+tr:hover {
+  background: #f9f9f9;           /* Light highlight on hover */
+}
+
+html
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Farmer Dashboard</title> <!-- Page title shown in browser tab -->
+</head>
+<body>
+
+<!-- Main heading of the dashboard -->
+<h1>Farmer Dashboard</h1>
+
+<!-- Section for adding new products -->
+<h2>Add Product</h2>
+<!-- Input for product name -->
+<input id="name" placeholder="Name">
+<!-- Input for product price (number only) -->
+<input id="price" type="number" placeholder="Price">
+<!-- Input for product stock quantity (number only) -->
+<input id="stock" type="number" placeholder="Stock">
+<!-- Button to trigger adding a product -->
+<button onclick="addProduct()">Add</button>
+
+<!-- Section showing current products in a table -->
+<h2>Products</h2>
+<table border="1">
+  <thead>
+    <tr>
+      <!-- Table headers -->
+      <th>Name</th>
+      <th>Price</th>
+      <th>Stock</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <!-- Table body where products will be dynamically added -->
+  <tbody id="products"></tbody>
+</table>
+
+<script>
+// Function to load products from backend API and display in table
+async function loadProducts() {
+  // Call backend API endpoint to get products data
+  const res = await fetch('/products');
+  // Parse response JSON into JavaScript array of products
+  const data = await res.json();
+
+  // Get reference to the <tbody> element where products will be listed
+  const table = document.getElementById("products");
+  // Clear existing table rows to avoid duplicates
+  table.innerHTML = "";
+
+  // Loop over each product and create a table row
+  data.forEach(p => {
+    table.innerHTML += `
+      <tr>
+        <td>${p.name}</td>          <!-- Product name -->
+        <td>£${p.price}</td>        <!-- Product price with £ symbol -->
+        <td>${p.stock}</td>         <!-- Product stock quantity -->
+        <td>
+          <!-- Button to delete this product, passing product ID -->
+          <button onclick="deleteProduct(${p.id})">Delete</button>
+          <!-- Button to update stock, passing product ID -->
+          <button onclick="updateStock(${p.id})">Update Stock</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+// Function to add a new product by sending data to backend API
+async function addProduct() {
+  // Get values entered by user in input fields
+  const name = document.getElementById("name").value;
+  const price = document.getElementById("price").value;
+  const stock = document.getElementById("stock").value;
+
+  // Here you would add code to send these values to the backend
+  // via a POST request, e.g., using fetch with method: 'POST'
+  // This part is missing and should be implemented.
+}
+</script>
+
+</body>
+</html>
